@@ -2,9 +2,13 @@
 
 
 // -- DAY 1 --
+//to calculate fuel
+int fuelCalculator(int mass) {
+	int fuel = floor(mass/3) - 2;
+	return fuel;
+}
 
 //TEST FOR PRIME NUMBERS
-
 //Simple method. Complexity O(num)
 bool is_prime_simple(int num) {
 
@@ -81,7 +85,7 @@ void intCode(std::vector<int> &code_vector) {
 
 // -- DAY 3 --
 //Create Cable Layout
-//constructs cable layout based on string instructions into a 2d vector
+constructs cable layout based on string instructions into a 2d vector
 std::vector<int> cableLayout(std::string &instr) {
 
   std::string delim = ",";
@@ -94,4 +98,4 @@ std::vector<int> cableLayout(std::string &instr) {
     }
     instr.erase(0, pos + delim.length());
 
-  }
+}

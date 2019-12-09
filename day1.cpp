@@ -2,11 +2,7 @@
 #include <fstream>
 #include <string>
 #include <math.h>
-
-int fuelCalculator(int mass) {
-	int fuel = floor(mass/3) - 2;
-	return fuel;
-}
+#include "functions.h"
 
 int main() {
 
@@ -21,7 +17,7 @@ int main() {
 		int extra_fuel;
 		int sum_fuel = 0;
 
-		while (getline(myfile,line))	
+		while (getline(myfile,line))
 		{
 			mod_mass = stoi(line);
 			mod_fuel = fuelCalculator(mod_mass);
@@ -34,7 +30,7 @@ int main() {
 				std::cout << total_fuel << " and " << extra_fuel << std::endl;
 				total_fuel += extra_fuel;
 				extra_fuel = fuelCalculator(extra_fuel);  //calculate fuel needed for extra fuel instance
-				
+
 			}
 
 			std::cout << "Module fuel: " << mod_fuel << " and Extra Fuel: " << total_fuel - mod_fuel << std::endl;
@@ -47,10 +43,10 @@ int main() {
 		myfile.close();
 	}
 
-	else 
+	else
 	{
 		std::cout << "Unable to open file..." << std::endl;
 	}
-	
+
 	return 0;
 }
