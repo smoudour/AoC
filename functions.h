@@ -10,4 +10,4 @@ int fuelCalculator(int mass);
 std::vector<int> vectorCreator(std::string input);
 void intCode(std::vector<int> &code_vector);
 //day3
-std::vector<int> cableLayout(std::string &instr);
+std::vector<std::string> makeInstr(std::string &string);

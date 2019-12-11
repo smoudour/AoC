@@ -1,4 +1,8 @@
 #include "D:/c++/adventofcode/functions.h"
+#include <cmath>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 
 // -- DAY 1 --
@@ -84,18 +88,34 @@ void intCode(std::vector<int> &code_vector) {
 // -----
 
 // -- DAY 3 --
-//Create Cable Layout
-constructs cable layout based on string instructions into a 2d vector
-std::vector<int> cableLayout(std::string &instr) {
+//pass instructions to string array
+std::vector<std::string> makeInstr (std::string &string) {
 
-  std::string delim = ",";
-  size_t pos = 0;
-  std::string token;
-  std::vector<int> v;
+	std::string delim = "," ;
+	size_t pos = 0;
+	std::vector<std::string> instr;	//array to store instructions
 
-  while ((pos = instr.find(delim)) != std::string::npos) {
-    token = instr.substr(0, pos);
-    }
-    instr.erase(0, pos + delim.length());
-
+	while ((pos = string.find(delim)) != std::string::npos) {
+		instr.push_back(string.substr(0, pos));
+		string.erase(0, pos + delim.length());
+	}
+	return instr;
 }
+
+
+
+//Create Cable Layout
+// constructs cable layout based on string instructions into a 2d vector
+// std::vector<int> cableLayout(std::string &instr) {
+//
+//   std::string delim = ",";
+//   size_t pos = 0;
+//   std::string token;
+//   std::vector<int> v;
+//
+//   while ((pos = instr.find(delim)) != std::string::npos) {
+//     token = instr.substr(0, pos);
+//     }
+//     instr.erase(0, pos + delim.length());
+//
+// }
