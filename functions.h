@@ -11,3 +11,7 @@ std::vector<int> vectorCreator(std::string input);
 void intCode(std::vector<int> &code_vector);
 //day3
 std::vector<std::string> makeInstr(std::string &string);
+int *getSize(std::vector<std::string> &input, std::string axis);
+
+//day4
+int giveCount(unsigned int const &low, unsigned int const &high);
