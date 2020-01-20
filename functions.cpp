@@ -107,11 +107,11 @@ std::vector<std::string> makeInstr (std::string &string) {
 //use string array to get sizes for matrix needed
 int *getSize(std::vector<std::string> &input, std::string axis) {
 
-	int threshold = 0;	//to calculate min and max. its the combined sum for both directions
+	int threshold = 0;	//dynamic sum for both directions. If it becomes bigger than max
+	// or smaller than min, it changes these corresponding values.
 	char a,b;	//variables to hold the movements. char type because of comparison with char array element (?)
-	int *results = new int[2];	//array to be returned
+	int *results = new int[2];	//array to be returned - dynamic memory
 	int max_=0, min_=0;	//max and min values to keep track of limits
-	bool flag1=false, flag2=false;	//flags to set first value of min and max
 
 	results[0] = 0;
 	results[1] = 0;
@@ -136,14 +136,8 @@ int *getSize(std::vector<std::string> &input, std::string axis) {
 			//add to threshold
 			threshold += steps;
 			//set max value
-			if (flag1==false) {
+			if (threshold > max_) {
 				max_ = threshold;
-				flag1 = true;
-			}
-			else {
-				if (threshold > max_) {
-					max_ = threshold;
-				}
 			}
 			token.erase(0);
 		}
@@ -153,40 +147,82 @@ int *getSize(std::vector<std::string> &input, std::string axis) {
 			//subtract from threshold
 			threshold -= steps;
 			//set min value
-			if (flag2 == false) {
+			if (threshold < min_) {
 				min_ = threshold;
-				flag2 = true;
 			}
-			else {
-				if (threshold < min_) {
-					min_ = threshold;
-				}
-			}
+
 			token.erase(0);
 
 		}
 	}
 	results[0] = abs(max_-min_);	//size of selected axis
-	results[1] = abs(min_-0);	//where to start drawing
+	results[1] = abs(min_);	//point (0,0) for the new array, or where to start drawing
 	return results;
 }
 
+//Draw cable on appropriate sized 2d vector
+//changes the values of given empty vector to 1 for cable line, 2 for crossing.
+//do this for each cable (?), or all at once (?)
+void drawCable(std::vector<std::string> &instr, std::vector<std::vector<int> > &layout, int &x_pos, int &y_pos) {
 
-//Create Cable Layout
-// constructs cable layout based on string instructions into a 2d vector
-// std::vector<int> cableLayout(std::string &instr) {
-//
-//   std::string delim = ",";
-//   size_t pos = 0;
-//   std::string token;
-//   std::vector<int> v;
-//
-//   while ((pos = instr.find(delim)) != std::string::npos) {
-//     token = instr.substr(0, pos);
-//     }
-//     instr.erase(0, pos + delim.length());
-//
-// }
+  std::string token;
+	unsigned int steps;
+
+	//loop through all instructions
+	for (unsigned int i=0; i<instr.size(); ++i) {
+		token = instr[i];
+		steps = stoi(token.substr(1));
+		if (token[0] == 'R') {
+			for (unsigned int j = 0; j<steps; ++j) {
+				if (layout[y_pos][x_pos+j] == 0) {
+					layout[y_pos][x_pos+j] = 1;
+				}
+				else if (layout[y_pos][x_pos+j] == 1) {
+					layout[y_pos][x_pos+j] = 2;
+				}
+			}
+			x_pos += steps;
+		}
+		else if (token[0] == 'L') {
+			for (unsigned int j=0; j<steps; ++j) {
+				if (layout[y_pos][x_pos-j] == 0) {
+					layout[y_pos][x_pos-j] = 1;
+				}
+				else if (layout[y_pos][x_pos-j] == 1) {
+					layout[y_pos][x_pos-j] = 2;
+				}
+			}
+			x_pos -= steps;
+		}
+		else if (token[0] == 'U') {
+			for (unsigned int j=0; j<steps; ++j) {
+				if (layout[y_pos+j][x_pos] == 0) {
+					layout[y_pos+j][x_pos] = 1;
+				}
+				else if (layout[y_pos+j][x_pos] == 1) {
+					layout[y_pos+j][x_pos] = 2;
+				}
+			}
+			y_pos += steps;
+		}
+		else if (token[0] == 'D') {
+			for (unsigned int j=0; j<steps; ++j) {
+				if (layout[y_pos-j][x_pos] == 0) {
+					layout[y_pos-j][x_pos] = 1;
+				}
+				else if (layout[y_pos-j][x_pos] == 1) {
+					layout[y_pos-j][x_pos] = 2;
+				}
+			}
+			y_pos -= steps;
+		}
+		else {
+			std::cout << "Unexpected instruction of: " << instr[i] << " at position " << i << std::endl;
+			exit(0);
+		}
+	}
+
+}
 
 // -- DAY 4 --
 //give count of compatible codes for range of nums (low - high)
