@@ -82,15 +82,12 @@ int main() {
 
   std::ifstream fin2("D:/c++/adventofcode/files/day3_test.txt");
 
-  while(getline(fin2,line)) {
-    instructions = makeInstr(line);
-    std::cout << instructions[0] << std::endl;
-    drawCable(instructions, layout, left, down);  // <-- this doesnt work...
-    //try with smaller vector.
-    //only one cable, cable intersects with itself...???
-    std::cout << "number of intersections: " << test(layout) << std::endl;
-
-  }
+  instructions = makeInstr(line);
+  std::cout << instructions[0] << std::endl;
+  drawCable(instructions, layout, left, down);  // <-- this doesnt work...
+  //try with smaller vector.
+  //only one cable, cable intersects with itself...???
+  std::cout << "number of intersections: " << test(layout) << std::endl;
   // fin.clear();
   // fin.seekg(0);
   // getline(fin,line);
